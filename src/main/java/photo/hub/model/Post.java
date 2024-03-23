@@ -34,8 +34,8 @@ public class Post {
     private String description;
     @Column(name = "views")
     private int views;
-    @Column(name = "photo", columnDefinition = "bytea")
-    private byte[] photo;
+    @Column(name = "photo_url")
+    private String photoUrl;
     @Column(name = "created_at")
     private LocalDate createdAt;
     @OneToMany(mappedBy = "post")
