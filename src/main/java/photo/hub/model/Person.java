@@ -23,15 +23,10 @@ public class Person {
     @Column(name = "id")
     private long id;
     @Column(name = "username")
-    @NotBlank(message = "username can not be empty")
-    @Size(min = 3, max = 15, message = "username length must be from 3 to 15 letters")
     private String username;
     @Column(name = "email")
-    @NotBlank(message = "email should be present")
-    @Email(message = "email should be valid")
     private String email;
     @Column(name = "password")
-    @Size(min = 8, message = "minimal password length 8 signs")
     private String password;
     @Column(name = "role")
     private String role;
