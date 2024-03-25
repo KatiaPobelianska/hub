@@ -3,6 +3,7 @@ package photo.hub.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -22,5 +23,5 @@ public class PostDtoInput {
     private String description;
 
     @NotNull
-    private byte[] photo;
+    private MultipartFile photo;
 }

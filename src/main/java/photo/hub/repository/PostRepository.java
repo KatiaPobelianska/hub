@@ -7,4 +7,5 @@ import photo.hub.model.Post;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
+
 }

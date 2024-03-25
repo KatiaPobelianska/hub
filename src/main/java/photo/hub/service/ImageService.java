@@ -5,26 +5,25 @@ import kong.unirest.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 @Service
 public class ImageService {
 
     @Value("${imgur.token}")
     private String imgurToken;
 
-    public String uploadToImgur(File file, String title, String description) {
+    public String uploadToImgur(byte[] fileBytes, String title, String description) {
         try {
-
             URL url = new URL("https://api.imgur.com/3/image");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", "Bearer " + imgurToken);
-
 
             String boundary = "Boundary-" + System.currentTimeMillis();
             conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
@@ -40,23 +39,14 @@ public class ImageService {
             out.writeBytes(description + "\r\n");
             out.writeBytes("--" + boundary + "\r\n");
 
-
-            out.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"" + file.getName() + "\"\r\n");
-            out.writeBytes("Content-Type: " + Files.probeContentType(Paths.get(file.toURI())) + "\r\n\r\n");
-            FileInputStream fileInputStream = new FileInputStream(file);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                out.write(buffer, 0, bytesRead);
-            }
+            out.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"image\"\r\n");
+            out.writeBytes("Content-Type: image/jpeg\r\n\r\n");
+            out.write(fileBytes);
             out.writeBytes("\r\n");
-            fileInputStream.close();
-
 
             out.writeBytes("--" + boundary + "--\r\n");
             out.flush();
             out.close();
-
 
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String inputLine;
@@ -65,7 +55,6 @@ public class ImageService {
                 response.append(inputLine);
             }
             in.close();
-
 
             JSONObject jsonResponse = new JSONObject(response.toString());
             String link = jsonResponse.getJSONObject("data").getString("link");
