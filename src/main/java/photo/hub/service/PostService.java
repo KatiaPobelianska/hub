@@ -25,30 +25,35 @@ public class PostService {
         this.postRepository = postRepository;
         this.imageService = imageService;
     }
-    public PostDtoOutput save(MultipartFile file, String description, String title, Person person){
-        Post post = convertPostDtoInputToPost(file, description,title, person);
+
+    public PostDtoOutput save(MultipartFile file, String description, String title, Person person) {
+        Post post = convertPostDtoInputToPost(file, description, title, person);
         post.setCreatedAt(LocalDateTime.now());
         post = postRepository.save(post);
-       return convertPostToPostDtoOutput(post);
+        return convertPostToPostDtoOutput(post);
     }
-    public PostDtoOutput getById(long id){
+
+    public PostDtoOutput getById(long id) {
         Optional<Post> postOptional = postRepository.findById(id);
-        if (postOptional.isEmpty()){
+        if (postOptional.isEmpty()) {
             throw new NoSuchElementException("no post with id " + id);
         }
         PostDtoOutput postDtoOutput = convertPostToPostDtoOutput(postOptional.get());
         return postDtoOutput;
     }
-    public List<PostDtoOutput> getAllPosts(){
+
+    public List<PostDtoOutput> getAllPosts() {
         List<Post> posts = postRepository.findAll();
         return convertPostsToPostDtoOutput(posts);
     }
-    public List<PostDtoOutput> getAllPostsByUser(Person person){
+
+    public List<PostDtoOutput> getAllPostsByUser(Person person) {
         List<Post> posts = postRepository.getPostsByOwnerUsername(person.getUsername());
         return convertPostsToPostDtoOutput(posts);
     }
-    public PostDtoOutput updatePost(PostDtoOutput postDtoOutput, Person person){
-        if (!postDtoOutput.getUsername().equals(person.getUsername())){
+
+    public PostDtoOutput updatePost(PostDtoOutput postDtoOutput, Person person) {
+        if (!postDtoOutput.getUsername().equals(person.getUsername())) {
             throw new InvalidUserException("invalid user access denied");
         }
         Post post = postRepository.findById(postDtoOutput.getId()).stream().findAny().orElseThrow();
@@ -57,21 +62,32 @@ public class PostService {
         postRepository.save(post);
         return convertPostToPostDtoOutput(post);
     }
-    public void delete(long id, Person person){
+
+    public void delete(long id, Person person) {
         Post post = postRepository.findById(id).stream().findAny().orElseThrow();
-        if (!person.getUsername().equals(post.getOwner().getUsername())){
+        if (!person.getUsername().equals(post.getOwner().getUsername())) {
             throw new InvalidUserException("invalid user access denied");
         }
         postRepository.deleteById(id);
     }
 
-    private List<PostDtoOutput> convertPostsToPostDtoOutput(List<Post> posts){
+    public void addView(long id) {
+        Post post = postRepository.findById(id).stream().findAny().orElseThrow();
+        post.setViews(post.getViews() + 1);
+        postRepository.save(post);
+    }
+    public Post getPostById(long id){
+        return postRepository.findById(id).stream().findAny().orElseThrow();
+    }
+
+    private List<PostDtoOutput> convertPostsToPostDtoOutput(List<Post> posts) {
         return posts.stream()
                 .map(this::convertPostToPostDtoOutput)
                 .toList();
     }
+
     @SneakyThrows
-    private Post convertPostDtoInputToPost(MultipartFile file, String description, String title, Person person){
+    private Post convertPostDtoInputToPost(MultipartFile file, String description, String title, Person person) {
         Post post = new Post();
         post.setTitle(title);
         post.setDescription(description);
@@ -80,7 +96,8 @@ public class PostService {
         post.setOwner(person);
         return post;
     }
-    private PostDtoOutput convertPostToPostDtoOutput(Post post){
+
+    private PostDtoOutput convertPostToPostDtoOutput(Post post) {
         PostDtoOutput postDtoOutput = new PostDtoOutput();
         postDtoOutput.setId(post.getId());
         postDtoOutput.setUsername(post.getOwner().getUsername());
@@ -91,7 +108,6 @@ public class PostService {
         postDtoOutput.setCreatedAt(post.getCreatedAt());
         return postDtoOutput;
     }
-
 
 
 }

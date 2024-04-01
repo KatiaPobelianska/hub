@@ -21,4 +21,9 @@ public class PhotoLike {
     @ManyToOne
     @JoinColumn(name = "person_username", referencedColumnName = "username")
     private Person person;
+
+    public PhotoLike(Post post, Person person) {
+        this.post = post;
+        this.person = person;
+    }
 }

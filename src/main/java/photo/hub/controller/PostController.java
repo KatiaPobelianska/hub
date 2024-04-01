@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import photo.hub.dto.PostDtoInput;
 import photo.hub.dto.PostDtoOutput;
 import photo.hub.exception.InvalidUserException;
 import photo.hub.security.PersonDetails;
@@ -55,6 +54,15 @@ public class PostController {
             return new ResponseEntity<>(postService.updatePost(postDtoOutput, personDetails.getPerson()), HttpStatus.OK);
         } catch (InvalidUserException e){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> addView(@PathVariable long id){
+        try {
+            postService.addView(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
