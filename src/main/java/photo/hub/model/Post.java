@@ -40,6 +40,5 @@ public class Post implements Serializable {
     private String photoUrl;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
+
 }
