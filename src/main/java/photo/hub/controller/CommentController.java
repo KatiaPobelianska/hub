@@ -41,8 +41,8 @@ public class CommentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable("id") long id){
-        return new ResponseEntity<>(commentService.getById(id), HttpStatus.OK);
-    }
+   @GetMapping("/all")
+    public ResponseEntity<?> getAllByUsername(@RequestParam("username") String username){
+           return new ResponseEntity<>(commentService.getAllByUsername(username), HttpStatus.OK);
+   }
 }
