@@ -5,27 +5,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "person")
+@Table(name = "activation")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Person implements Serializable {
+public class Activation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
+    @Column(name = "key")
+    private String key;
     @Column(name = "username")
     private String username;
-    @Column(name = "email")
-    private String email;
-    @Column(name = "password")
-    private String password;
-    @Column(name = "role")
-    private String role;
-    @Column(name = "enable")
-    private boolean enable;
 
+    public Activation(String key, String username) {
+        this.key = key;
+        this.username = username;
+    }
 }

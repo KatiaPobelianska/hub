@@ -55,4 +55,9 @@ public class PersonDetailsService implements UserDetailsService {
     public Person save(Person person){
         return personRepository.save(person);
     }
+    public void activate(String username){
+        Person person = getByUsername(username).orElseThrow();
+        person.setEnable(true);
+        save(person);
+    }
 }
