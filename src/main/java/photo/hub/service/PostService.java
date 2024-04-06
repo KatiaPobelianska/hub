@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import photo.hub.dto.PostDtoOutput;
 import photo.hub.exception.InvalidUserException;
+import photo.hub.model.Category;
 import photo.hub.model.Person;
 import photo.hub.model.Post;
 import photo.hub.repository.PostRepository;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -26,8 +28,8 @@ public class PostService {
         this.imageService = imageService;
     }
 
-    public PostDtoOutput save(MultipartFile file, String description, String title, Person person) {
-        Post post = convertPostDtoInputToPost(file, description, title, person);
+    public PostDtoOutput save(MultipartFile file, String description, String title, Category category, Person person) {
+        Post post = convertPostDtoInputToPost(file, description, title, category, person);
         post.setCreatedAt(LocalDateTime.now());
         post = postRepository.save(post);
         return convertPostToPostDtoOutput(post);
@@ -76,8 +78,13 @@ public class PostService {
         post.setViews(post.getViews() + 1);
         postRepository.save(post);
     }
-    public Post getPostById(long id){
+
+    public Post getPostById(long id) {
         return postRepository.findById(id).stream().findAny().orElseThrow();
+    }
+    public List<PostDtoOutput> getAllByKey(String key){
+        List<Post> posts = postRepository.findByTitleContaining(key);
+        return convertPostsToPostDtoOutput(posts);
     }
 
     private List<PostDtoOutput> convertPostsToPostDtoOutput(List<Post> posts) {
@@ -87,9 +94,10 @@ public class PostService {
     }
 
     @SneakyThrows
-    private Post convertPostDtoInputToPost(MultipartFile file, String description, String title, Person person) {
+    private Post convertPostDtoInputToPost(MultipartFile file, String description, String title, Category category, Person person) {
         Post post = new Post();
         post.setTitle(title);
+        post.setCategory(category);
         post.setDescription(description);
         post.setPhotoUrl(imageService.uploadToImgur(file.getBytes(), title, description));
 
@@ -102,6 +110,7 @@ public class PostService {
         postDtoOutput.setId(post.getId());
         postDtoOutput.setUsername(post.getOwner().getUsername());
         postDtoOutput.setTitle(post.getTitle());
+        postDtoOutput.setCategory(post.getCategory());
         postDtoOutput.setDescription(post.getDescription());
         postDtoOutput.setViews(post.getViews());
         postDtoOutput.setPhotoUrl(post.getPhotoUrl());

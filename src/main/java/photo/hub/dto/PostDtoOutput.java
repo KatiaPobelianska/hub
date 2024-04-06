@@ -3,8 +3,8 @@ package photo.hub.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import photo.hub.model.Category;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,7 +16,6 @@ public class PostDtoOutput {
 
     private String username;
 
-
     private String title;
 
     private String description;
@@ -26,4 +25,7 @@ public class PostDtoOutput {
     private String photoUrl;
 
     private LocalDateTime createdAt;
+
+    private Category category;
+
 }

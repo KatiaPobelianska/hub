@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+import photo.hub.model.Category;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,4 +25,6 @@ public class PostDtoInput {
 
     @NotNull
     private MultipartFile photo;
+    @NotNull
+    private String category;
 }

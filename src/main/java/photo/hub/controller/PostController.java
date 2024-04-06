@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import photo.hub.dto.PostDtoOutput;
 import photo.hub.exception.InvalidUserException;
+import photo.hub.model.Category;
 import photo.hub.security.PersonDetails;
 import photo.hub.service.PostService;
 
@@ -32,9 +33,15 @@ public class PostController {
     public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
     }
+
     @GetMapping("/user")
-    public ResponseEntity<?> getAllPostsByUser(@AuthenticationPrincipal PersonDetails personDetails){
-        return new  ResponseEntity<>(postService.getAllPostsByUser(personDetails.getPerson()), HttpStatus.OK);
+    public ResponseEntity<?> getAllPostsByUser(@AuthenticationPrincipal PersonDetails personDetails) {
+        return new ResponseEntity<>(postService.getAllPostsByUser(personDetails.getPerson()), HttpStatus.OK);
+    }
+
+    @GetMapping("/find/{key}")
+    public ResponseEntity<?> getAllByKey(@PathVariable("key") String key) {
+        return new ResponseEntity<>(postService.getAllByKey(key), HttpStatus.OK);
     }
 
     //Photo will get without RequestBody
@@ -42,9 +49,10 @@ public class PostController {
     public ResponseEntity<?> save(@RequestPart("file") MultipartFile file,
                                   @RequestPart("description") String description,
                                   @RequestPart("title") String title,
+                                  @RequestPart("category") String category,
                                   @AuthenticationPrincipal PersonDetails personDetails) {
 
-        return new ResponseEntity<>(postService.save(file, description, title, personDetails.getPerson()), HttpStatus.CREATED);
+        return new ResponseEntity<>(postService.save(file, description, title, Category.valueOf(category), personDetails.getPerson()), HttpStatus.CREATED);
     }
 
     @PatchMapping("/update")
@@ -52,30 +60,32 @@ public class PostController {
                                     @AuthenticationPrincipal PersonDetails personDetails) {
         try {
             return new ResponseEntity<>(postService.updatePost(postDtoOutput, personDetails.getPerson()), HttpStatus.OK);
-        } catch (InvalidUserException e){
+        } catch (InvalidUserException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @PatchMapping("/{id}")
-    public ResponseEntity<?> addView(@PathVariable long id){
+    public ResponseEntity<?> addView(@PathVariable long id) {
         try {
             postService.addView(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @DeleteMapping("/{id}")
     private ResponseEntity<?> delete(@PathVariable("id") long id,
-                        @AuthenticationPrincipal PersonDetails personDetails){
+                                     @AuthenticationPrincipal PersonDetails personDetails) {
         try {
-            postService.delete(id,personDetails.getPerson());
-             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (NoSuchElementException e){
+            postService.delete(id, personDetails.getPerson());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (InvalidUserException e){
+        } catch (InvalidUserException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }

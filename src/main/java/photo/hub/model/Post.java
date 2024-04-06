@@ -1,16 +1,14 @@
 package photo.hub.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Entity
@@ -40,5 +38,8 @@ public class Post implements Serializable {
     private String photoUrl;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @Column(name = "category")
+    @Enumerated(value = EnumType.STRING)
+    private Category category;
 
 }

@@ -35,13 +35,9 @@ public class PersonDetailsService implements UserDetailsService {
     }
 
     public Person addAdmin(long id) {
-        Optional<Person> person = getById(id);
-        if (person.isEmpty()){
-            throw new UsernameNotFoundException("user not found");
-        }
-        Person personToSave = person.get();
-        personToSave.setRole("ROLE_ADMIN");
-        return personRepository.save(personToSave);
+        Person person = getById(id).orElseThrow();
+        person.setRole("ROLE_ADMIN");
+        return personRepository.save(person);
     }
     public List<Person> getAllNotAdmin(){
         return personRepository.findAllByRoleNotContaining("ROLE_ADMIN");

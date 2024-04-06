@@ -7,6 +7,7 @@ CREATE TABLE person
     role     varchar not null,
     enable   boolean default false
 );
+UPDATE person set role='ROLE_ADMIN' where id=3;
 
 CREATE TABLE Post
 (
@@ -16,8 +17,12 @@ CREATE TABLE Post
     description    varchar                              not null,
     views          int       default 0,
     photo_url      varchar                              not null,
-    created_at     timestamp default current_timestamp
+    created_at     timestamp default current_timestamp,
+    category       varchar                              not null
 );
+DROP TABLE Photo_like;
+DROP TABLE Comment;
+DROP TABLE Post;
 
 
 CREATE TABLE Comment
