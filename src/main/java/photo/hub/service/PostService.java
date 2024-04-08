@@ -86,6 +86,12 @@ public class PostService {
         List<Post> posts = postRepository.findByTitleContaining(key);
         return convertPostsToPostDtoOutput(posts);
     }
+    public long totalCountOfViews(){
+        return postRepository.getTotalViews();
+    }
+    public List<PostDtoOutput> getFiveOfMostViews(){
+        return convertPostsToPostDtoOutput(postRepository.findTop5ByOrderByViewsDesc());
+    }
 
     private List<PostDtoOutput> convertPostsToPostDtoOutput(List<Post> posts) {
         return posts.stream()

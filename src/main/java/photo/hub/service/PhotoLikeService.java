@@ -47,4 +47,7 @@ public class PhotoLikeService {
             throw new LikeMissingException("like is missing for this post");
         }
     }
+    public long getCount(){
+        return photoLikeRepository.count();
+    }
 }

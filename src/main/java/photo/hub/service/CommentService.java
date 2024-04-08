@@ -13,13 +13,11 @@ import java.util.List;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final PostService postService;
-
     @Autowired
     public CommentService(CommentRepository commentRepository, PostService postService) {
         this.commentRepository = commentRepository;
         this.postService = postService;
     }
-
     public void addComment(CommentInputDto commentInputDto, String username) {
         Post post = postService.getPostById(commentInputDto.getPostId());
         commentRepository.save(new Comment(commentInputDto.getPostId(), username, commentInputDto.getDescription()));
@@ -31,4 +29,8 @@ public class CommentService {
     public List<Comment> getAllByUsername(String username){
        return commentRepository.findAllByPersonUsername(username);
     }
+    public long getCount(){
+        return commentRepository.count();
+    }
+
 }
