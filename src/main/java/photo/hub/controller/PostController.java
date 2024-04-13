@@ -89,12 +89,9 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
+
     @GetMapping("/best")
-    public ResponseEntity<?> getFivePostsOfMostViews(){
+    public ResponseEntity<?> getFivePostsOfMostViews() {
         return new ResponseEntity<>(postService.getFiveOfMostViews(), HttpStatus.OK);
     }
-
-
-
-
 }

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import photo.hub.dto.PersonDto;
-import photo.hub.model.Person;
 import photo.hub.service.PersonDetailsService;
 
 @Component
