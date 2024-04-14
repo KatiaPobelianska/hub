@@ -24,7 +24,7 @@ public class PersonDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Person> person = personRepository.findByUsername(username);
+        Optional<Person> person = personRepository.findByUsername(username); // TODO можно сократить код, ипользуя .orElseThrow(() -> new UsernameNotFoundException("User not found"))
         if (person.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -36,7 +36,7 @@ public class PersonDetailsService implements UserDetailsService {
 
     public Person addAdmin(long id) {
         Person person = getById(id).orElseThrow();
-        person.setRole("ROLE_ADMIN");
+        person.setRole("ROLE_ADMIN"); // TODO просится вынести в константы или Enum
         return personRepository.save(person);
     }
     public List<Person> getAllNotAdmin(){

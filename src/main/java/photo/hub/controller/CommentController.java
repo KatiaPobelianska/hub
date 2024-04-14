@@ -36,8 +36,8 @@ public class CommentController {
     public ResponseEntity<?> getAllByPost(@RequestParam("postId") long postId){
         try {
             List<Comment> comments = commentService.getAllByPost(postId);
-            return new ResponseEntity<>(comments, HttpStatus.OK);
-        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(comments, HttpStatus.OK); // TODO Здесь и в аналогичных местах возвращайте dto, а не сущность
+        }catch (NoSuchElementException e){ // TODO Отлов вынесите в ControllerAdvice
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

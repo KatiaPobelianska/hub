@@ -27,7 +27,7 @@ public class PhotoLikeService {
     }
     public boolean isPresentLike(long postId, String username){
         Optional<PhotoLike> photoLike = photoLikeRepository.findByPostIdAndPersonUsername(postId,username);
-        if (photoLike.isPresent()){
+        if (photoLike.isPresent()){ // TODO даже IDE подсказывает, что можно упростить код
             return true;
         }
         return false;

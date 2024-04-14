@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PhotoLikeInputDto {
+public class PhotoLikeInputDto { // TODO без валидации?
    private long postId;
 
    private String username;

@@ -31,7 +31,7 @@ public class RegistrationService {
         String key = activationService.generateCode(person.getUsername());
         emailService.sendEmail(new EmailDto(personDto.getEmail(), "Account activation",
                 "To activate your account, please, follow this link:\n" +
-                        "http://localhost:80/activation/" + key));
+                        "http://localhost:80/activation/" + key)); // TODO URL берите из настроек
         return personSaved;
 
     }
