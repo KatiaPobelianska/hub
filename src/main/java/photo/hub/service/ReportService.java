@@ -32,7 +32,7 @@ public class ReportService {
         document.addPage(page);
 
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        PDFont font = PDType0Font.load(document, new File("src/main/resources/CaviarDreams.ttf"));
+        PDFont font = PDType0Font.load(document, new File("src/main/resources/CaviarDreams.ttf")); // TODO в настройки
         contentStream.setFont(font, 16);
         contentStream.beginText();
 

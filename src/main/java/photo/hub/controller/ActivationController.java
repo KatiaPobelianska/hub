@@ -19,7 +19,7 @@ public class ActivationController {
     }
     @GetMapping("/{key}")
     public ResponseEntity<?> activate(@PathVariable("key") String key){
-        try {
+        try { //TODO можно избавиться от try-catch, если сделать отлов в ControllerAdvice
             activationService.activate(key);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (NoSuchElementException e){

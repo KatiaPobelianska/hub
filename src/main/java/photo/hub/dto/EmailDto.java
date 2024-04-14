@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmailDto {
-    @Email(message = "email should be valid")
+    @Email(message = "email should be valid") // TODO Обратите внимание, что null elements are considered valid.
     private String email;
     @NotBlank(message = "subject can not be empty")
     private String subject;

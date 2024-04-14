@@ -12,6 +12,7 @@ import photo.hub.service.PhotoLikeService;
 
 import java.util.NoSuchElementException;
 
+// TODO здесь и далее всё те же замечания к контроллерам, что и были ранее
 @RestController
 @RequestMapping("/likes")
 public class PhotoLikeController {

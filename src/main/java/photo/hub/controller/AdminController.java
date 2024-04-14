@@ -23,7 +23,7 @@ public class AdminController {
     }
     @PatchMapping("/{id}")
     public ResponseEntity<?> addAdmin(@PathVariable("id") long id){
-        try {
+        try { //TODO можно избавиться от try-catch, если сделать отлов в ControllerAdvice
             personDetailsService.addAdmin(id);
             return new ResponseEntity<>(HttpStatus.OK);
 

@@ -20,7 +20,7 @@ import photo.hub.service.PersonDetailsService;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // TODO устаревший подход. Вообще лучше бы Spring Boot 3 использовали, который мы изучили.
     private final JwtRequestFilter jwtRequestFilter;
     private final PersonDetailsService personDetailsService;
 
@@ -34,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
     @Override
-    @SneakyThrows
+    @SneakyThrows // TODO во многих местах не к месту. Добавили бы Вы исключение в сигнатуру метода, и на что бы это повлияло?
     protected void configure(AuthenticationManagerBuilder auth ){
         auth.userDetailsService(personDetailsService).passwordEncoder(passwordEncoder());
     }

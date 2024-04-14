@@ -35,7 +35,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 long chatId = update.getMessage().getChatId();
                 if (message.equals("/start")){
                     sendMessage(chatId, "ask me something");
-                    return;
+                    return; // TODO не нужен
                 }else {
                     sendChatAction(chatId, ActionType.TYPING);
                     sendMessage(chatId, chatGpt(message));
@@ -55,12 +55,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         return botConfig.getBotToken();
     }
 
-    @SneakyThrows
+    @SneakyThrows // TODO Ну, так себе подход для начинающего разработчика. Бросайте свои исключения и отлавливайте на ControllerAdvice.
     public String chatGpt(String message) {
-        String url = "https://api.openai.com/v1/chat/completions";
-        String apiKey = "";
-        String model = "gpt-3.5-turbo-16k";
-        URL obj = new URL(url);
+        String url = "https://api.openai.com/v1/chat/completions"; // TODO вынесите в константы, а лучше в файл настроек
+        String apiKey = ""; // TODO вынесите в константы, а лучше в файл настроек
+        String model = "gpt-3.5-turbo-16k"; // TODO вынесите в константы, а лучше в файл настроек
+        URL obj = new URL(url); // TODO Мы изучили RestClient и OpenFeign. Используйте их, чтобы было меньше кода.
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Authorization", "Bearer " + apiKey);

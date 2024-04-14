@@ -40,7 +40,7 @@ public class PostService {
         if (postOptional.isEmpty()) {
             throw new NoSuchElementException("no post with id " + id);
         }
-        PostDtoOutput postDtoOutput = convertPostToPostDtoOutput(postOptional.get());
+        PostDtoOutput postDtoOutput = convertPostToPostDtoOutput(postOptional.get()); //TODO inline
         return postDtoOutput;
     }
 

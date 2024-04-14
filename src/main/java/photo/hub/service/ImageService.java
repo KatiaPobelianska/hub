@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 @Service
-public class ImageService {
+public class ImageService { // TODO Код "в лоб". Можно сделать проще с помощью RestClient или хотя бы вынести шаблон телаз апроса в ресурсы
 
     @Value("${imgur.token}")
     private String imgurToken;
