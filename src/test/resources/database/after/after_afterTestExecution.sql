@@ -1,0 +1,12 @@
+DELETE FROM activation;
+DELETE FROM post;
+DELETE FROM person;
+DELETE FROM comment;
+DELETE FROM photo_like;
+DELETE FROM statistic;
+ALTER SEQUENCE activation_id_seq RESTART WITH 1;
+ALTER SEQUENCE post_id_seq RESTART WITH 1;
+ALTER SEQUENCE person_id_seq RESTART WITH 1;
+ALTER SEQUENCE comment_id_seq RESTART WITH 1;
+ALTER SEQUENCE photo_like_id_seq RESTART WITH 1;
+ALTER SEQUENCE statistic_id_seq RESTART WITH 1;

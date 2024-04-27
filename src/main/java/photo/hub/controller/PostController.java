@@ -26,7 +26,11 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable("id") long id) {
-        return new ResponseEntity<>(postService.getById(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(postService.getById(id), HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping()
@@ -47,9 +51,9 @@ public class PostController {
     //Photo will get without RequestBody
     @PostMapping()
     public ResponseEntity<?> save(@RequestPart("file") MultipartFile file,
-                                  @RequestPart("description") String description,
-                                  @RequestPart("title") String title,
-                                  @RequestPart("category") String category,
+                                  @RequestParam("description") String description,
+                                  @RequestParam("title") String title,
+                                  @RequestParam("category") String category,
                                   @AuthenticationPrincipal PersonDetails personDetails) {
 
         return new ResponseEntity<>(postService.save(file, description, title, Category.valueOf(category), personDetails.getPerson()), HttpStatus.CREATED);
