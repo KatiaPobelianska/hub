@@ -29,19 +29,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtRequestFilter = jwtRequestFilter;
         this.personDetailsService = personDetailsService;
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Override
-    @SneakyThrows
-    protected void configure(AuthenticationManagerBuilder auth ){
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(personDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
     @SneakyThrows
-    protected void configure(HttpSecurity http){
+    protected void configure(HttpSecurity http) {
         http
                 .csrf().disable()
                 .authorizeRequests()
@@ -56,15 +57,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
     @Override
-    public void configure(WebSecurity web){
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/",
                 "/configuration/security", "/swagger-ui.html", "/webjars/");
     }
+
     @Bean
     @Override
     @SneakyThrows
-    public AuthenticationManager authenticationManagerBean(){
+    public AuthenticationManager authenticationManagerBean() {
         return super.authenticationManagerBean();
     }
 

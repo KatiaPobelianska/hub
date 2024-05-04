@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @Accessors(chain = true)
 public class EmailDto {
     @Email(message = "email should be valid")
+    @NotBlank(message = "email can not be empty")
     private String email;
     @NotBlank(message = "subject can not be empty")
     private String subject;

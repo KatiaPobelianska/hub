@@ -35,8 +35,7 @@ public class CommentController {
     @GetMapping
     public ResponseEntity<?> getAllByPost(@RequestParam("postId") long postId){
         try {
-            List<Comment> comments = commentService.getAllByPost(postId);
-            return new ResponseEntity<>(comments, HttpStatus.OK);
+            return new ResponseEntity<>(commentService.getAllByPost(postId), HttpStatus.OK);
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
