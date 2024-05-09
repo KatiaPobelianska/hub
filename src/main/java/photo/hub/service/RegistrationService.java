@@ -1,6 +1,7 @@
 package photo.hub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import photo.hub.dto.EmailDto;
@@ -13,6 +14,8 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final ActivationService activationService;
+    @Value("${activation.link}")
+    private String activationLink;
 
     @Autowired
     public RegistrationService(PersonDetailsService personDetailsService, PasswordEncoder passwordEncoder, EmailService emailService, ActivationService activationService) {
@@ -31,7 +34,7 @@ public class RegistrationService {
         String key = activationService.generateCode(person.getUsername());
         emailService.sendEmail(new EmailDto(personDto.getEmail(), "Account activation",
                 "To activate your account, please, follow this link:\n" +
-                        "http://localhost:80/activation/" + key));
+                        activationLink + key));
         return personSaved;
 
     }
@@ -45,5 +48,4 @@ public class RegistrationService {
         person.setRole(personDto.getRole());
         return person;
     }
-
 }

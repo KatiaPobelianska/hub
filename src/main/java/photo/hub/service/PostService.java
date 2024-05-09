@@ -12,10 +12,7 @@ import photo.hub.model.Post;
 import photo.hub.repository.PostRepository;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class PostService {
@@ -36,11 +33,8 @@ public class PostService {
     }
 
     public PostDtoOutput getById(long id) {
-        Optional<Post> postOptional = postRepository.findById(id);
-        if (postOptional.isEmpty()) {
-            throw new NoSuchElementException("no post with id " + id);
-        }
-        PostDtoOutput postDtoOutput = convertPostToPostDtoOutput(postOptional.get());
+        Post post = postRepository.findById(id).orElseThrow();
+        PostDtoOutput postDtoOutput = convertPostToPostDtoOutput(post);
         return postDtoOutput;
     }
 
@@ -123,6 +117,4 @@ public class PostService {
         postDtoOutput.setCreatedAt(post.getCreatedAt());
         return postDtoOutput;
     }
-
-
 }

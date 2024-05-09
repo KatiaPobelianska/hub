@@ -7,17 +7,20 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import photo.hub.model.Statistic;
 
+import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 @Service
 public class ReportService {
     private final StatisticService statisticService;
+    @Value("${font.url}")
+    private String fontUrl;
 
     @Autowired
     public ReportService(StatisticService statisticService) {
@@ -32,7 +35,7 @@ public class ReportService {
         document.addPage(page);
 
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        PDFont font = PDType0Font.load(document, new File("src/main/resources/CaviarDreams.ttf"));
+        PDFont font = PDType0Font.load(document, new File(fontUrl));
         contentStream.setFont(font, 16);
         contentStream.beginText();
 
