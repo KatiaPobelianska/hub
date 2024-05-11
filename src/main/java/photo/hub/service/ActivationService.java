@@ -16,7 +16,6 @@ public class ActivationService {
         this.personDetailsService = personDetailsService;
     }
 
-
     public String generateCode(String username) {
         String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         int size = (int) (Math.random() * 6 + 10);
@@ -34,5 +33,4 @@ public class ActivationService {
         Activation activation = activationRepository.findByKey(key).orElseThrow();
         personDetailsService.activate(activation.getUsername());
     }
-
 }

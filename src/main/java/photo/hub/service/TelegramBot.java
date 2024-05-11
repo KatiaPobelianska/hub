@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +18,12 @@ import photo.hub.config.BotConfig;
 @Service
 public class TelegramBot extends TelegramLongPollingBot {
     private final BotConfig botConfig;
+    @Value("${gpt.key}")
+    private String apiKey;
+    @Value("${gpt.model}")
+    private String model;
+    @Value("${gpt.url}")
+    private String url;
 
     @Autowired
     public TelegramBot(BotConfig botConfig) {
@@ -31,7 +38,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 long chatId = update.getMessage().getChatId();
                 if (message.equals("/start")) {
                     sendMessage(chatId, "ask me something");
-                    return;
                 } else {
                     sendChatAction(chatId, ActionType.TYPING);
                     sendMessage(chatId, chatGpt(message));
@@ -51,9 +57,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     public String chatGpt(String message) {
-        String apiKey = "";
-        String url = "https://api.openai.com/v1/chat/completions";
-        String model = "gpt-3.5-turbo-16k";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
